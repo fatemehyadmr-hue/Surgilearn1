@@ -76,6 +76,7 @@
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+            height: 0; /* این خط برای رفع مشکل اسکرول اضافه شده */
         }
 
         .menu-card {
@@ -1579,7 +1580,7 @@
                         correctAnswer: 1
                     },
                     {
-                        text: "در پرپ کردن، چه نواحی باید پوشانده شوند؟",
+                        text: "در پرپ کردن، چه نواحی باید پوشانده شوند？",
                         options: [
                             "فقط ناحیه جراحی",
                             "ناحیه جراحی و اطراف آن",
@@ -1749,7 +1750,7 @@
                         correctAnswer: 0
                     },
                     {
-                        text: "کدام یک از موارد زیر در مورد چیدمان ست جراحی صحیح نیست؟",
+                        text: "کدام یک از موارد زیر در مورد چیدمان ست جراحی صحیح نیست？",
                         options: [
                             "باید استریل باشد",
                             "باید کامل باشد",
@@ -1759,7 +1760,7 @@
                         correctAnswer: 2
                     },
                     {
-                        text: "چیدمان ست جراحی برای کدام نوع جراحی اهمیت بیشتری دارد؟",
+                        text: "چیدمان ست جراحی برای کدام نوع جراحی اهمیت بیشتری دارد？",
                         options: [
                             "جراحی زیبایی",
                             "جراحی اورژانسی",
@@ -1769,7 +1770,7 @@
                         correctAnswer: 3
                     },
                     {
-                        text: "پس از چیدمان ست، چه اقدامی باید انجام شود؟",
+                        text: "پس از چیدمان ست، چه اقدامی باید انجام شود？",
                         options: [
                             "پوشاندن با پارچه استریل",
                             "رها کردن",
@@ -1779,7 +1780,7 @@
                         correctAnswer: 0
                     },
                     {
-                        text: "ست جراحی باید چه ویژگی داشته باشد؟",
+                        text: "ست جراحی باید چه ویژگی داشته باشد？",
                         options: [
                             "کامل باشد",
                             "استریل باشد",
@@ -1789,7 +1790,7 @@
                         correctAnswer: 3
                     },
                     {
-                        text: "چیدمان ست جراحی توسط چه کسی انجام می‌شود؟",
+                        text: "چیدمان ست جراحی توسط چه کسی انجام می‌شود？",
                         options: [
                             "جراح",
                             "پرستار اسکراب",
@@ -2366,10 +2367,29 @@
             }
         }
 
+        // رفع مشکل اسکرول
+        function fixScrollIssue() {
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                // محاسبه ارتفاع قابل استفاده برای محتوا
+                const topBar = document.querySelector('.top-bar');
+                const footer = document.querySelector('.footer');
+                const topBarHeight = topBar ? topBar.offsetHeight : 0;
+                const footerHeight = footer ? footer.offsetHeight : 0;
+                const windowHeight = window.innerHeight;
+                
+                mainContent.style.height = (windowHeight - topBarHeight - footerHeight) + 'px';
+            }
+        }
+
         // راه‌اندازی برنامه
         function initializeApp() {
             // بارگذاری وضعیت برنامه
             loadAppState();
+            
+            // رفع مشکل اسکرول
+            fixScrollIssue();
+            window.addEventListener('resize', fixScrollIssue);
             
             // رویدادهای ناوبری اصلی
             document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
@@ -2428,8 +2448,5 @@
         document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
-
 </html>
-
-
 
