@@ -6,6 +6,7 @@
     <title>اپلیکیشن آموزش اتاق عمل</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* استایل‌های قبلی بدون تغییر */
         :root {
             --primary-blue: #0077b6;
             --light-blue: #90e0ef;
@@ -942,8 +943,7 @@
                     <div class="contact-info">
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>surgilearn.medical@gmail.com
-                             </span>
+                            <span>surgilearn.medical@gmail.com</span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-map-marker-alt"></i>
@@ -1077,7 +1077,7 @@
                             "پشت دست",
                             "کف دست"
                         ],
-                        correctAnswer: 2
+                        correctAnswer: 1
                     },
                     {
                         text: "تا چه ارتفاعی از ساعد باید اسکراب انجام شود؟",
@@ -1087,7 +1087,7 @@
                             "تا شانه",
                             "تا آرنج"
                         ],
-                        correctAnswer: 1
+                        correctAnswer: 0
                     },
                     {
                         text: "مدت زمان استاندارد اسکراب کردن هر دو دست چقدر است؟",
@@ -1097,7 +1097,7 @@
                             "5-7 دقیقه",
                             "12 دقیقه"
                         ],
-                        correctAnswer: 3
+                        correctAnswer: 2
                     },
                     {
                         text: "در مرحله آبکشی، جهت جریان آب باید چگونه باشد؟",
@@ -1107,7 +1107,7 @@
                             " از انگشتان به آرنج",
                             "تمام موارد"
                         ],
-                        correctAnswer: 3
+                        correctAnswer: 2
                     },
                     {
                         text: "پس از اتمام اسکراب، دست‌ها باید چگونه خشک شوند؟",
@@ -1127,7 +1127,7 @@
                             "میز جراحی",
                              "حوله استریل"
                         ],
-                        correctAnswer: 1
+                        correctAnswer: 0
                     },
                     {
                         text: "در اسکراب کردن، چه محلول‌هایی معمولاً استفاده می‌شوند؟",
@@ -1137,7 +1137,7 @@
                             "صابون معمولی",
                             "آب اکسیژنه"
                         ],
-                        correctAnswer: 2
+                        correctAnswer: 1
                     },
                     {
                         text: "کدام یک از موارد زیر در مورد اسکراب جراحی صحیح نیست؟",
@@ -2021,6 +2021,12 @@
 
         // تغییر صفحه
         function showPage(pageId) {
+            // متوقف کردن ویدیو اگر در حال پخش است
+            if (appState.currentPage === 'video-player-page') {
+                const videoElement = document.getElementById('educational-video');
+                videoElement.pause();
+            }
+            
             // مخفی کردن همه صفحات
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
@@ -2313,7 +2319,14 @@
 
         // ذخیره یادداشت‌ها
         function saveNotes() {
-            appState.notes = document.getElementById('notes-editor').value;
+            const notesContent = document.getElementById('notes-editor').value.trim();
+            
+            if (notesContent === '') {
+                alert('شما چیزی ثبت نکردید. لطفاً چیزی بنویسید.');
+                return;
+            }
+            
+            appState.notes = notesContent;
             saveAppState();
             alert('یادداشت‌ها با موفقیت ذخیره شد.');
         }
@@ -2321,7 +2334,14 @@
         // ذخیره یادداشت‌های ویدیو
         function saveVideoNotes() {
             if (appState.currentVideo) {
-                appState.videoNotes[appState.currentVideo] = document.getElementById('video-notes').value;
+                const videoNotesContent = document.getElementById('video-notes').value.trim();
+                
+                if (videoNotesContent === '') {
+                    alert('شما چیزی ثبت نکردید. لطفاً چیزی بنویسید.');
+                    return;
+                }
+                
+                appState.videoNotes[appState.currentVideo] = videoNotesContent;
                 saveAppState();
                 alert('یادداشت‌های ویدیو با موفقیت ذخیره شد.');
             }
@@ -2364,6 +2384,9 @@
                 // در مرورگر وب، نمی‌توانیم برنامه را ببندیم، اما می‌توانیم یک پیام نشان دهیم
                 alert('با تشکر از استفاده شما از اپلیکیشن آموزش اتاق عمل');
                 // در یک اپلیکیشن واقعی، اینجا کد بستن اپلیکیشن قرار می‌گیرد
+                
+                // بستن پنجره/تب در مرورگر
+                window.close();
             }
         }
 
